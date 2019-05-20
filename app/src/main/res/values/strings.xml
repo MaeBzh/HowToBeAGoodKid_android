@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">HowToBeAGoodKid</string>
+    <string name="action_settings">Paramètres</string>
+    <string name="connection">Connexion</string>
+    <string name="create_account">Créer un compte</string>
+    <string name="label_email">Adresse email</string>
+    <string name="forgot_password">Mot de passe oublié ?</string>
+    <string name="remember_me">Se rappeler de moi</string>
+    <string name="label_password">Mot de passe</string>
+    <string name="repeat_password">Retapez votre mot de passe</string>
+    <string name="password_error">Ce mot de passe n\'est pas valide</string>
+    <string name="email_error">Cet email n\'est pas valide</string>
+</resources>
