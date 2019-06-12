@@ -2,17 +2,19 @@ package com.k.howtobeagoodkid.entities;
 
 public class Point {
     private long id;
-    private String color;
-    private int value;
+    private int periodId;
+    private int pointTypeId;
+    private int nbPoints;
 
     public Point() {
 
     }
 
-    public Point(long id, String color, int value) {
+    public Point(long id, int periodId, int pointTypeId, int nbPoints) {
         this.id = id;
-        this.color = color;
-        this.value = value;
+        this.periodId = periodId;
+        this.pointTypeId = pointTypeId;
+        this.nbPoints = nbPoints;
     }
 
     public long getId() {
@@ -23,19 +25,27 @@ public class Point {
         this.id = id;
     }
 
-    public String getColor() {
-        return color;
+    public int getPeriodId() {
+        return periodId;
     }
 
-    public void setColor(String color) {
-        this.color = color;
+    public void setPeriodId(int periodId) {
+        this.periodId = periodId;
     }
 
-    public int getValue() {
-        return value;
+    public int getPointTypeId() {
+        return pointTypeId;
     }
 
-    public void setValue(int value) {
-        this.value = value;
+    public void setPointTypeId(int pointTypeId) {
+        this.pointTypeId = pointTypeId;
+    }
+
+    public int getNbPoints() {
+        return nbPoints;
+    }
+
+    public void setNbPoints(int nbPoints) {
+        this.nbPoints = nbPoints;
     }
 }

@@ -1,4 +1,4 @@
-package com.k.howtobeagoodkid.dao;
+package com.k.howtobeagoodkid.providers;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -9,21 +9,15 @@ import com.k.howtobeagoodkid.entities.User;
 
 import java.util.ArrayList;
 
-public class UserDao extends BaseDao {
+public class UserProvider extends ProviderBase {
 
-    public static final String TABLE_CREATE = "CREATE TABLE " + UserContract.TABLE_NAME + " (" + UserContract.KEY + " INTEGER " +
-            "PRIMARY KEY " +
-            "AUTOINCREMENT, " + UserContract.FIRSTNAME + " TEXT, " + UserContract.LASTNAME + " TEXT, " + UserContract.EMAIL + " TEXT, " + UserContract.PASSWORD + " TEXT," +
-            UserContract.ISPARENT + " INTEGER);";
-
-    public static final String TABLE_DROP = "DROP TABLE IF EXISTS " + UserContract.TABLE_NAME + ";";
-
-    public UserDao(Context context) {
+    public UserProvider(Context context) {
         super(context);
     }
 
     /**
      * Insert to Database.
+     *
      * @param user the user to add
      */
     public void insert(User user) {
@@ -40,14 +34,16 @@ public class UserDao extends BaseDao {
 
     /**
      * Delete from Database.
+     *
      * @param id the id fo the user to delete
      */
     public void delete(long id) {
-        this.db.delete(UserContract.TABLE_NAME, UserContract.KEY + " = ?", new String[] {String.valueOf(id)});
+        this.db.delete(UserContract.TABLE_NAME, UserContract.KEY + " = ?", new String[]{String.valueOf(id)});
     }
 
     /**
      * Update a user in DatabaseHandler.
+     *
      * @param user the user to update
      */
     public void update(User user) {
@@ -58,12 +54,13 @@ public class UserDao extends BaseDao {
         //TODO : secure password
         values.put(UserContract.PASSWORD, user.getPassword());
         values.put(UserContract.ISPARENT, user.isParent());
-        this.db.update(UserContract.TABLE_NAME, values, UserContract.KEY  + " = ?",
-                new String[] {String.valueOf(user.getId())});
+        this.db.update(UserContract.TABLE_NAME, values, UserContract.KEY + " = ?",
+                new String[]{String.valueOf(user.getId())});
     }
 
     /**
      * Get one user from Database.
+     *
      * @param id the id of the user to get
      */
     public User get(long id) {
@@ -82,6 +79,7 @@ public class UserDao extends BaseDao {
 
     /**
      * Get all the users from Database.
+     *
      * @return the list of users
      */
     public ArrayList<User> getAll() {
@@ -99,6 +97,5 @@ public class UserDao extends BaseDao {
         }
         return result;
     }
-
 }
 

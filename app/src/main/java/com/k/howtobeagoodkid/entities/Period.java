@@ -8,25 +8,22 @@ public class Period {
     private long id;
     private DateTime dateStart;
     private DateTime dateEnd;
-    private ArrayList<Point> points;
-    private int rewardId;
-    private User parent;
-    private User child;
     private boolean rewardObtained;
+
+    private int rewardId;
+    private int childId;
 
     public Period() {
 
     }
 
-    public Period(long id, DateTime dateStart, DateTime dateEnd, ArrayList<Point> points, int rewardId, User parent,
-                  User child, boolean rewardObtained) {
+    public Period(long id, DateTime dateStart, DateTime dateEnd, int rewardId,
+                  int childId, boolean rewardObtained) {
         this.id = id;
         this.dateStart = dateStart;
         this.dateEnd = dateEnd;
-        this.points = points;
         this.rewardId = rewardId;
-        this.parent = parent;
-        this.child = child;
+        this.childId = childId;
         this.rewardObtained = rewardObtained;
     }
 
@@ -54,12 +51,12 @@ public class Period {
         this.dateEnd = dateEnd;
     }
 
-    public ArrayList<Point> getPoints() {
-        return points;
+    public boolean isRewardObtained() {
+        return rewardObtained;
     }
 
-    public void setPoints(ArrayList<Point> points) {
-        this.points = points;
+    public void setRewardObtained(boolean rewardObtained) {
+        this.rewardObtained = rewardObtained;
     }
 
     public int getRewardId() {
@@ -70,27 +67,11 @@ public class Period {
         this.rewardId = rewardId;
     }
 
-    public User getParent() {
-        return parent;
+    public int getChildId() {
+        return childId;
     }
 
-    public void setParent(User parent) {
-        this.parent = parent;
-    }
-
-    public User getChild() {
-        return child;
-    }
-
-    public void setChild(User child) {
-        this.child = child;
-    }
-
-    public boolean isRewardObtained() {
-        return rewardObtained;
-    }
-
-    public void setRewardObtained(boolean rewardObtained) {
-        this.rewardObtained = rewardObtained;
+    public void setChildId(int childId) {
+        this.childId = childId;
     }
 }

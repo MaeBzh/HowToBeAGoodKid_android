@@ -7,16 +7,35 @@ import com.k.howtobeagoodkid.utils.Utils;
 
 public class PeriodContract {
 
-    public static final String TABLE_NAME = "reward";
+    public static final String TABLE_NAME = "period";
     public static final String KEY = "id";
     public static final String DATESTART = "dateStart";
     public static final String DATEEND = "dateEnd";
-    //    public static final String POINTS = "points";
-    public static final String REWARD = "reward";
-    public static final String PARENT = "parent";
-    public static final String CHILD = "child";
+    public static final String REWARDID = "rewardId";
+    public static final String CHILDID = "childId";
     public static final String REWARDOBTAINED = "rewardObtained";
 
+    public static final String TABLE_CREATE =
+            "CREATE TABLE " + PeriodContract.TABLE_NAME
+                    + " (" + PeriodContract.KEY + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                    + PeriodContract.DATESTART + " TEXT, "
+                    + PeriodContract.DATEEND + " TEXT, "
+                    + PeriodContract.REWARDOBTAINED + " INTEGER, "
+                    + PeriodContract.CHILDID + " INTEGER, "
+                    + PeriodContract.REWARDID + " INTEGER,"
+                    + "FOREIGN KEY(" + PeriodContract.CHILDID + ") REFERENCES "
+                    + UserContract.TABLE_NAME + "(" + UserContract.KEY + "), "
+                    + "FOREIGN KEY(" + PeriodContract.REWARDID + ") REFERENCES "
+                    + RewardContract.TABLE_NAME + "(" + RewardContract.KEY + "));";
+
+    public static final String TABLE_DROP = "DROP TABLE IF EXISTS " + PeriodContract.TABLE_NAME + ";";
+
+    /**
+     * Turn a cursor into a Period.
+     *
+     * @param cursor a cursor
+     * @return a Period
+     */
     public static Period cursorToItem(final Cursor cursor) {
         Period result = new Period();
         if (cursor.getCount() != 0) {
@@ -37,11 +56,19 @@ public class PeriodContract {
             if (index > -1) {
                 result.setDateEnd(Utils.stringToDate(cursor.getString(index)));
             }
-            index = cursor.getColumnIndex(PeriodContract.REWARD);
+
+            index = cursor.getColumnIndex(PeriodContract.REWARDID);
 
             if (index > -1) {
-                result.setRewardId(cursor.getInt(index));
+                result.setChildId(cursor.getInt(index));
             }
+
+            index = cursor.getColumnIndex(PeriodContract.CHILDID);
+
+            if (index > -1) {
+                result.setChildId(cursor.getInt(index));
+            }
+
             index = cursor.getColumnIndex(PeriodContract.REWARDOBTAINED);
 
             if (index > -1) {

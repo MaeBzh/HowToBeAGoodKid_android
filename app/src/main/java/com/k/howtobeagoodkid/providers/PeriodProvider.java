@@ -1,45 +1,38 @@
-package com.k.howtobeagoodkid.dao;
+package com.k.howtobeagoodkid.providers;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 
 import com.k.howtobeagoodkid.contract.PeriodContract;
+import com.k.howtobeagoodkid.contract.PointContract;
 import com.k.howtobeagoodkid.contract.RewardContract;
+import com.k.howtobeagoodkid.contract.UserContract;
 import com.k.howtobeagoodkid.entities.Period;
+import com.k.howtobeagoodkid.entities.Point;
 import com.k.howtobeagoodkid.entities.Reward;
+import com.k.howtobeagoodkid.entities.User;
 import com.k.howtobeagoodkid.utils.Utils;
 
 import java.util.ArrayList;
 
-public class PeriodDao extends BaseDao {
+public class PeriodProvider extends ProviderBase {
 
-    public static final String TABLE_CREATE =
-            "CREATE TABLE " + PeriodContract.TABLE_NAME + " (" + PeriodContract.KEY + " INTEGER " +
-            "PRIMARY KEY " +
-            "AUTOINCREMENT, " + PeriodContract.DATESTART + " TEXT, " + PeriodContract.DATEEND + " TEXT, " + PeriodContract.PARENT +
-                    " TEXT, " + PeriodContract.CHILD + " TEXT, " + PeriodContract.REWARD + " INTEGER,"
-            + " FOREIGN KEY ("+PeriodContract.REWARD+") REFERENCES "+ RewardContract.TABLE_NAME+"("+RewardContract.KEY+
-                    "));";
-
-    public static final String TABLE_DROP = "DROP TABLE IF EXISTS " + PeriodContract.TABLE_NAME + ";";
-
-    public PeriodDao(Context context) {
+    public PeriodProvider(Context context) {
         super(context);
     }
 
     /**
      * Insert to Database.
      *
-     * @param period the reward to add
+     * @param period the period to add
      */
     public void insert(Period period) {
         ContentValues values = new ContentValues();
         values.put(PeriodContract.DATESTART, Utils.dateToString(period.getDateStart()));
         values.put(PeriodContract.DATEEND, Utils.dateToString(period.getDateEnd()));
-        values.put(PeriodContract.REWARD, period.getReward().getId());
-        values.put(PeriodContract.PARENT, period.getParent().getId());
-        values.put(PeriodContract.CHILD, period.getChild().getId());
+        values.put(PeriodContract.REWARDID, period.getRewardId());
+        values.put(PeriodContract.CHILDID, period.getChildId());
         values.put(PeriodContract.REWARDOBTAINED, false);
         this.db.insert(PeriodContract.TABLE_NAME, null, values);
 
@@ -63,9 +56,8 @@ public class PeriodDao extends BaseDao {
         ContentValues values = new ContentValues();
         values.put(PeriodContract.DATESTART, Utils.dateToString(period.getDateStart()));
         values.put(PeriodContract.DATEEND, Utils.dateToString(period.getDateEnd()));
-        values.put(PeriodContract.REWARD, period.getReward().getId());
-        values.put(PeriodContract.PARENT, period.getParent().getId());
-        values.put(PeriodContract.CHILD, period.getChild().getId());
+        values.put(PeriodContract.REWARDID, period.getRewardId());
+        values.put(PeriodContract.CHILDID, period.getChildId());
         values.put(PeriodContract.REWARDOBTAINED, period.isRewardObtained());
         this.db.update(PeriodContract.TABLE_NAME, values, PeriodContract.KEY + " = ?",
                 new String[]{String.valueOf(period.getId())});
@@ -93,7 +85,7 @@ public class PeriodDao extends BaseDao {
     /**
      * Get all the periods from Database.
      *
-     * @return the list of rewards
+     * @return the list of periods
      */
     public ArrayList<Period> getAll() {
         ArrayList<Period> result = new ArrayList<>();
@@ -111,18 +103,45 @@ public class PeriodDao extends BaseDao {
         return result;
     }
 
-    public Reward getAssociateReward(
-            final Period period) {
-        Reward result = new Reward();
-        String query = "select * from " + RewardContract.TABLE_NAME + " where id = ?";
-        String[] selectionArgs = new String[]{String.valueOf(period.getReward())};
-        Cursor cursor = this.db.rawQuery(query, selectionArgs);
-        if (cursor.getCount() > 0) {
-            cursor.moveToFirst();
-            result = RewardContract.cursorToItem(cursor);
-        }
-        cursor.close();
+    /**
+     * Get the child User associated to a period.
+     * @param period the period
+     * @return a User
+     */
+    public User getAssociateChild(Period period) {
+        UserProvider userProvider = new UserProvider(this.getContext());
+        return userProvider.get(period.getChildId());
+    }
 
+    /**
+     * Get the child User associated to a period.
+     * @param period the period
+     * @return a User
+     */
+    public Reward getAssociateReward(Period period) {
+        RewardProvider rewardProvider = new RewardProvider(this.getContext());
+        return rewardProvider.get(period.getRewardId());
+    }
+
+    /**
+     * Get all the points associated to a period.
+     * @param period the period
+     * @return a list of points
+     */
+    public ArrayList<Point> getAssociatedPoints(Period period) {
+        ArrayList<Point> result = new ArrayList<>();
+        String query = "select * from " + PointContract.TABLE_NAME + " where periodId = ?";
+        String[] selectionArgs = new String[]{String.valueOf(period.getId())};
+        Cursor cursor = this.db.rawQuery(query, selectionArgs);
+        if (cursor.getCount() != 0) {
+            cursor.moveToFirst();
+
+            Point item;
+            do {
+                item = PointContract.cursorToItem(cursor);
+                result.add(item);
+            } while (cursor.moveToNext());
+        }
         return result;
     }
 }

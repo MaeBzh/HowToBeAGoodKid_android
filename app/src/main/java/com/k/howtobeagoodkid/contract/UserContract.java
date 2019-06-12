@@ -15,6 +15,16 @@ public class UserContract {
     public static final String PASSWORD = "password";
     public static final String ISPARENT = "isParent";
 
+    public static final String TABLE_CREATE = "CREATE TABLE " + UserContract.TABLE_NAME
+            + " (" + UserContract.KEY + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + UserContract.FIRSTNAME + " TEXT, "
+            + UserContract.LASTNAME + " TEXT, "
+            + UserContract.EMAIL + " TEXT, "
+            + UserContract.PASSWORD + " TEXT,"
+            + UserContract.ISPARENT + " INTEGER);";
+
+    public static final String TABLE_DROP = "DROP TABLE IF EXISTS " + UserContract.TABLE_NAME + ";";
+
     /**
      * Turn a cursor to a User.
      * @param cursor a cursor

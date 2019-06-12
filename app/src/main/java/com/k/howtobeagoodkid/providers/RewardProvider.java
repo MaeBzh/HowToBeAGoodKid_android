@@ -1,4 +1,4 @@
-package com.k.howtobeagoodkid.dao;
+package com.k.howtobeagoodkid.providers;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -9,17 +9,9 @@ import com.k.howtobeagoodkid.entities.Reward;
 
 import java.util.ArrayList;
 
-public class RewardDao extends BaseDao {
+public class RewardProvider extends ProviderBase {
 
-    public static final String TABLE_CREATE =
-            "CREATE TABLE " + RewardContract.TABLE_NAME + " (" + RewardContract.KEY + " INTEGER " +
-            "PRIMARY " +
-            "KEY " +
-            "AUTOINCREMENT, " + NAME + " TEXT, " + RewardContract.VALUE + " INT, " + RewardContract.ICON + " TEXT);";
-
-    public static final String TABLE_DROP = "DROP TABLE IF EXISTS " + RewardContract.TABLE_NAME + ";";
-
-    public RewardDao(Context context) {
+    public RewardProvider(Context context) {
         super(context);
     }
 

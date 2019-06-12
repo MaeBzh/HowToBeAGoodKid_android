@@ -2,7 +2,6 @@ package com.k.howtobeagoodkid.contract;
 
 import android.database.Cursor;
 
-import com.k.howtobeagoodkid.entities.Period;
 import com.k.howtobeagoodkid.entities.Reward;
 
 public class RewardContract {
@@ -13,6 +12,20 @@ public class RewardContract {
     public static final String VALUE = "value";
     public static final String ICON = "icon";
 
+    public static final String TABLE_CREATE =
+            "CREATE TABLE " + RewardContract.TABLE_NAME
+                    + " (" + RewardContract.KEY + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                    + RewardContract.NAME + " TEXT, "
+                    + RewardContract.VALUE + " INTEGER "
+                    + RewardContract.ICON + " TEXT);";
+
+    public static final String TABLE_DROP = "DROP TABLE IF EXISTS " + RewardContract.TABLE_NAME + ";";
+
+    /**
+     * Turn a cursor into a Reward.
+     * @param cursor a cursor
+     * @return a Reward
+     */
     public static Reward cursorToItem(final Cursor cursor) {
         Reward result = new Reward();
         if (cursor.getCount() != 0) {
@@ -23,7 +36,7 @@ public class RewardContract {
             if (index > -1) {
                 result.setId(cursor.getLong(index));
             }
-            index = cursor.getColumnIndex(NAME);
+            index = cursor.getColumnIndex(RewardContract.NAME);
 
             if (index > -1) {
                 result.setName(cursor.getString(index));
@@ -42,3 +55,5 @@ public class RewardContract {
         return result;
     }
 }
+
+
